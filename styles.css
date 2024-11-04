@@ -39,14 +39,15 @@ body {
   }
   
   /* Estructura del formulario */
-  .container {
-    position: inherit;
-    max-width: 600px;
+  #container {
+    position: relative;
+    max-width: 800px;
     margin: 0 auto;
-    margin-top: -100px;
+    top: -70px;
     padding: 20px;
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid gray;
   }
   
   .form-group {
@@ -278,6 +279,7 @@ body {
     /*area de imagen y primeros inputs*/
 
     #inputs{
+      top: 5px;
       width: 45%;
       position: absolute;
       margin-left: 20px;
