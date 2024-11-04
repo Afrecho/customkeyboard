@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Conversor de caracteres a arrays</title>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <style>
+    /* Estilos generales */
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.5;
+    }
+    
+    h1, h2 {
+      color: #333;
+    }
+    
+    label {
+      font-weight: bold;
+    }
+    
+    input[type="text"], textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      width: 300px;
+      max-width: 100%;
+    }
+    
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    
+    button:hover {
+      background-color: #45a049;
+    }
+    
+    textarea[readonly] {
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+    }
+    
+    /* Estructura del formulario */
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      width: 100%;
+    }
+    
+    .form-group input[type="text"],
+    .form-group textarea {
+      width: 100%;
+    }
+    
+    .form-group:nth-child(2n) {
+      margin-left: 20px;
+    }
+    
+    /* Resultados */
+    .results {
+      margin-top: 40px;
+    }
+    
+    .results h2 {
+      margin-bottom: 10px;
+    }
+    
+    .results textarea {
+      width: 100%;
+      height: 100px;
+    }
+    
+    /* Código HTML y Texto Generado */
+    .code-section {
+      margin-top: 40px;
+    }
+    
+    .code-section textarea {
+      width: 100%;
+      height: 200px;
+    }
+    
+    /* Telado virtual estilo*/
+    .key {
+      position: relative;
+      height: 15mm;
+      width: 15mm;
+      border-radius: 7px;
+      margin: 5px;
+      font-size: 1.9em;
+      text-align: left;
+      padding: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Conversor de caracteres a arrays</h1>
+    <div class="form-group">
+      <label for="input1">Input 1:</label>
+      <input type="text" id="input1">
+    </div>
+    <div class="form-group">
+      <label for="input2">Input 2:</label>
+      <input type="text" id="input2">
+    </div>
+    <div class="form-group">
+      <label for="input3">Input 3:</label>
+      <input type="text" id="input3">
+    </div>
+    <div class="results">
+      <h2>Resultados:</h2>
+      <div>
+        <label for="array1">Array 1:</label>
+        <textarea id="array1" readonly></textarea>
+      </div>
+      <div>
+        <label for="array2">Array 2:</label>
+        <textarea id="array2" readonly></textarea>
+      </div>
+      <div>
+        <label for="array3">Array 3:</label>
+        <textarea id="array3" readonly></textarea>
+      </div>
+    </div>
+    <button onclick="convertirArrays()">Convertir a Arrays</button>
+    <div class="code-section">
+      <h2>Código HTML:</h2>
+      <textarea id="codeHTML" readonly></textarea>
+    </div>
+    <div class="code-section">
+      <h2>Texto generado en JavaScript:</h2>
+      <textarea id="textoGeneradoJS" readonly></textarea>
+    </div>
+  </div>
+
+  <div class="virtual-keyboard">
+    <div class="key" data-char="a">a</div>
+    <div class="key" data-char="b">b</div>
+    <div class="key" data-char="c">c</div>
+    <div class="key" data-char="d">d</div>
+    <div class="key" data-char="e">e</div>
+    <div class="key" data-char="f">f</div>
+    <div class="key" data-char="g">g</div>
+    <div class="key" data-char="h">h</div>
+    <div class="key" data-char="i">i</div>
+    <div class="key" data-char="j">j</div>
+    <div class="key" data-char="k">k</div>
+    <div class="key" data-char="l">l</div>
+    <div class="key" data-char="m">m</div>
+    <div class="key" data-char="n">n</div>
+    <div class="key" data-char="o">o</div>
+    <div class="key" data-char="p">p</div>
+    <div class="key" data-char="q">q</div>
+    <div class="key" data-char="r">r</div>
+    <div class="key" data-char="s">s</div>
+    <div class="key" data-char="t">t</div>
+    <div class="key" data-char="u">u</div>
+    <div class="key" data-char="v">v</div>
+    <div class="key" data-char="w">w</div>
+    <div class="key" data-char="x">x</div>
+    <div class="key" data-char="y">y</div>
+    <div class="key" data-char="z">z</div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
