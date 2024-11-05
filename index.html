@@ -3,127 +3,143 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="style_key.css">
-<link rel="stylesheet" href="botonesCambio.css">
-<script src="cambiarEstilo.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-
-
-
-    <title>Actualizar Divs</title>
-
-
-
-     <style>
-
-  </style>
+    <link rel="stylesheet" href="style_key.css">
+    <link rel="stylesheet" href="botonesCambio.css">
+    <script src="cambiarEstilo.js"></script>
+    <script src="guardarCargar.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <title>Keyboard Layout Generator</title>
 </head>
 <body>
 
 <div id="inputs">
-    <label for="input1">Input 1:</label>
-    <input type="text" id="input1"><br>
+    <label for="select1">Posición Principal:</label>
+    <select id="select1" onchange="actualizarDivs()"></select><br>
 
-    <label for="input2">Input 2:</label>
-    <input type="text" id="input2"><br>
+    <label for="select2">Posición Superior:</label>
+    <select id="select2" onchange="actualizarDivs()"></select><br>
 
-    <label for="input3">Input 3:</label>
-    <input type="text" id="input3"><br>
+    <label for="select3">Posición Inferior:</label>
+    <select id="select3" onchange="actualizarDivs()"></select><br>
 </div>
 
 <div id="container">
-
     <div class="marca">print your keyboard</div>
-
-<div id="myDiv">
-    
-</div>
+    <div id="myDiv"></div>
 </div>
 
-<button id="exportKeyboard">EXPORT</button>
+<div style="margin: 20px; display: flex; gap: 10px;">
+  <button id="exportKeyboard">EXPORT</button>
+  <button id="savePreset" onclick="guardarPreset()">Guardar Preset</button>
+  <button id="loadPreset" onclick="cargarPreset()">Cargar Preset</button>
+</div>
 
 <div class="color-controls" style="margin: 20px;">
     <div>
-      <label>Color borde y texto principal:</label>
-      <input type="color" id="keyColor" value="#d8d8d8" oninput="cambiarColorKey()">
+        <label>Color borde y texto principal:</label>
+        <input type="color" id="keyColor" value="#d8d8d8" oninput="cambiarColorKey()">
     </div>
-  
     <div style="margin-top: 10px;">
-      <label>Color texto ruso:</label>
-      <input type="color" id="alt1Color" value="#ff0000" oninput="cambiarColorAlt1()">
+        <label>Color texto superior:</label>
+        <input type="color" id="alt1Color" value="#ff0000" oninput="cambiarColorAlt1()">
     </div>
-  
     <div style="margin-top: 10px;">
-      <label>Color texto coreano:</label>
-      <input type="color" id="alt2Color" value="#4b0082" oninput="cambiarColorAlt2()">
+        <label>Color texto inferior:</label>
+        <input type="color" id="alt2Color" value="#4b0082" oninput="cambiarColorAlt2()">
     </div>
-
     <div style="margin-top: 10px;">
-      <label>Color fondo:</label>
-      <input type="color" id="divColor" onchange="cambiarFondo()" />
+        <label>Color fondo:</label>
+        <input type="color" id="divColor" onchange="cambiarFondo()">
     </div>
-
-
-  </div>
+</div>
 
 <script>
-    // Inicializar arrays fuera de la función
-    var keyArray = [];
-    var altArray = [];
-    var alt2Array = [];
+// alfabetos JSON sin comas (falta separar tipo array)
+const alfabetos = {
+    'AZERTY FR': 'azertyuiop^$qsdfghjklmù<wxcvbn,;:!',
+    'Cirílico': 'йцукенгшщзхъфывапролджэ\\ячсмитьбю.',
+    'Hangul': 'ㅂㅈㄷㄱㅅㅛㅕㅑㅐㅔ[]ㅁㄴㅇㄹㅎㅗㅓㅏㅣ;\'\\ㅋㅌㅊㅍㅠㅜㅡ,./',
+    'Vacío': ' '.repeat(30)
+};
 
-    function actualizarDivs() {
-        // Obtener valores de los inputs
-        var input1 = document.getElementById("input1").value;
-        var input2 = document.getElementById("input2").value;
-        var input3 = document.getElementById("input3").value;
+//   cambiar colores
+function cambiarColorKey() {
+    document.documentElement.style.setProperty('--key-color', document.getElementById('keyColor').value);
+}
 
-        // Convertir los inputs a arrays
-        keyArray = Array.from(input1);
-        altArray = Array.from(input2);
-        alt2Array = Array.from(input3);
+function cambiarColorAlt1() {
+    document.documentElement.style.setProperty('--alt1-color', document.getElementById('alt1Color').value);
+}
 
-        // Limpiar la salida antes de actualizar
-        var outputDiv = document.getElementById("myDiv");
-        outputDiv.innerHTML = ""; // Limpiar el contenido existente
+function cambiarColorAlt2() {
+    document.documentElement.style.setProperty('--alt2-color', document.getElementById('alt2Color').value);
+}
 
-        // Generar divs según la cantidad de caracteres
-        for (var i = 0; i < Math.max(keyArray.length, altArray.length, alt2Array.length); i++) {
-            var key = keyArray[i] || '';
-            var alt = altArray[i] || '';
-            var alt2 = alt2Array[i] || '';
+function cambiarFondo() {
+    document.documentElement.style.setProperty('--fondo-color', document.getElementById('divColor').value);
+}
 
-            // Solo agregar divs si hay contenido
-            if (key || alt || alt2) {
-                outputDiv.innerHTML += '<div class="key">' + key + '\n' +
-                    '<h5 class="alt">' + alt + '</h5>\n' +
-                    '<h6 class="alt2">' + alt2 + '</h6>\n' +
-                    '</div>\n\n';
-            }
+// funcion poblar selects
+function poblarSelects() {
+    const selects = [
+        document.getElementById('select1'),
+        document.getElementById('select2'),
+        document.getElementById('select3')
+    ];
+
+    // Poblar cada select con todos los alfabetos disponibles
+    selects.forEach(select => {
+        for (let nombre in alfabetos) {
+            select.add(new Option(nombre, nombre));
+        }
+    });
+
+    // Establecer valores por defecto
+    selects[0].value = 'AZERTY FR';
+    selects[1].value = 'Cirílico';
+    selects[2].value = 'Hangul';
+}
+
+function actualizarDivs() {
+    const select1 = document.getElementById('select1');
+    const select2 = document.getElementById('select2');
+    const select3 = document.getElementById('select3');
+
+    // Obtener las cadenas de caracteres seleccionadas
+    const keyArray = Array.from(alfabetos[select1.value]);
+    const altArray = Array.from(alfabetos[select2.value]);
+    const alt2Array = Array.from(alfabetos[select3.value]);
+
+    // Limpiar la salida antes de actualizar
+    const outputDiv = document.getElementById('myDiv');
+    outputDiv.innerHTML = '';
+
+    // Generar divs según la cantidad de caracteres
+    for (let i = 0; i < Math.max(keyArray.length, altArray.length, alt2Array.length); i++) {
+        const key = keyArray[i] || '';
+        const alt = altArray[i] || '';
+        const alt2 = alt2Array[i] || '';
+
+        if (key || alt || alt2) {
+            outputDiv.innerHTML += `
+                <div class="key">${key}
+                    <h5 class="alt">${alt}</h5>
+                    <h6 class="alt2">${alt2}</h6>
+                </div>
+            `;
         }
     }
-
-    // Agregar eventos de input
-    document.getElementById("input1").addEventListener("input", actualizarDivs);
-    document.getElementById("input2").addEventListener("input", actualizarDivs);
-    document.getElementById("input3").addEventListener("input", actualizarDivs);
-
-//FUNCION EXPORTAR
-
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("exportKeyboard").addEventListener("click", exportToPDF);
-});
+}
 
 // Función para exportar a PDF
 function exportToPDF() {
     const element = document.getElementById('myDiv');
     const options = {
         margin: 10,
-        filename: 'exported_keyboard.pdf',
+        filename: 'keyboard_layout.pdf',
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
     };
 
     html2pdf()
@@ -132,7 +148,12 @@ function exportToPDF() {
         .save();
 }
 
-
+// Inicializar la página
+document.addEventListener('DOMContentLoaded', function() {
+    poblarSelects();
+    actualizarDivs();
+    document.getElementById('exportKeyboard').addEventListener('click', exportToPDF);
+});
 </script>
 
 </body>
